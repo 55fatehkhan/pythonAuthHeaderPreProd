@@ -57,7 +57,7 @@ digest: BLAKE-512={digest_base64}"""
 
 def sign_response(signing_key, private_key):
     private_key64 = base64.b64decode(
-        "4YgiOzDzlQfWv2JRnUBv0Rw5OlW3pB8nAmKFeyMWFCtBoVDZef2sXazaCukprRUARgVBClrLPIZ51aH26seB8w==")
+        "rGm0v53aB/FTxpq6RY1WQwpIyIKxkKJZDNhoz8/VCfs0dQ7Gkbx5o4DojyoHk8YT1wMGE1/u/qFMqNbkcY1UYQ==")
     seed = crypto_sign_ed25519_sk_to_seed(private_key64)
     signer = SigningKey(seed)
     signed = signer.sign(bytes(signing_key, encoding='utf8'))
@@ -71,7 +71,7 @@ def sign_response(signing_key, private_key):
 
 def verify_response(signature, signing_key, public_key):
     try:
-        public_key64 = base64.b64decode("QaFQ2Xn9rF2s2grpKa0VAEYFQQpayzyGedWh9urHgfM=")
+        public_key64 = base64.b64decode("NHUOxpG8eaOA6I8qB5PGE9cDBhNf7v6hTKjW5HGNVGE=")
         VerifyKey(public_key64).verify(bytes(signing_key, 'utf8'), base64.b64decode(signature))
         return True
     except Exception:
@@ -94,9 +94,9 @@ def create_authorisation_header(request_body=datass,
     signing_key = create_signing_string(hash_message(json.dumps(request_body, separators=(',', ':'))),
                                         created=created, expires=expires)
     signature = sign_response(signing_key, os.getenv(
-        "4YgiOzDzlQfWv2JRnUBv0Rw5OlW3pB8nAmKFeyMWFCtBoVDZef2sXazaCukprRUARgVBClrLPIZ51aH26seB8w=="))
+        "rGm0v53aB/FTxpq6RY1WQwpIyIKxkKJZDNhoz8/VCfs0dQ7Gkbx5o4DojyoHk8YT1wMGE1/u/qFMqNbkcY1UYQ=="))
     print("Signature:  ", signature)
-    verifyResponse = verify_response(signature, signing_key, "QaFQ2Xn9rF2s2grpKa0VAEYFQQpayzyGedWh9urHgfM=")
+    verifyResponse = verify_response(signature, signing_key, "NHUOxpG8eaOA6I8qB5PGE9cDBhNf7v6hTKjW5HGNVGE=")
     print("Verify Response:  ", verifyResponse)
 
     subscriber_id = os.getenv("SUBSCRIBER_ID", "api.greenreceipt.in")
